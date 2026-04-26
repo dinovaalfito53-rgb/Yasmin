@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Yasmin Bakery, Coffee & Resto — Cita Rasa Klasik di Jantung Palembang. Roti, Cake Jadul, Kopi Vietnam terbaik di Palembang." />
+  <title>Yasmin Bakery, Coffee & Resto — Palembang</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts: Playfair Display + DM Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            espresso:  '#1C0A00',
+            roast:     '#3B1A08',
+            mocha:     '#6B3A2A',
+            caramel:   '#C27D3E',
+            gold:      '#D4A853',
+            cream:     '#FAF3E8',
+            parchment: '#F0E4CC',
+            ivory:     '#FFFDF7',
+          },
+          fontFamily: {
+            display: ['"Playfair Display"', 'Georgia', 'serif'],
+            body:    ['"DM Sans"', 'sans-serif'],
+          },
+        },
+      },
+    };
+  </script>
+
+  <style>
+    /* ── Base ── */
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background-color: #FAF3E8;
+      color: #1C0A00;
+      overflow-x: hidden;
+    }
+
+    /* ── Grain texture overlay ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+      opacity: .45;
+    }
+
+    /* ── Typography helpers ── */
+    .font-display { font-family: 'Playfair Display', Georgia, serif; }
+
+    /* ── Animated underline on nav links ── */
+    .nav-link {
+      position: relative;
+      font-size: .875rem;
+      font-weight: 500;
+      color: #1C0A00;
+      text-decoration: none;
+      letter-spacing: .02em;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      left: 0; bottom: -2px;
+      width: 0; height: 1.5px;
+      background: #C27D3E;
+      transition: width .3s ease;
+    }
+    .nav-link:hover::after { width: 100%; }
+
+    /* ── Hero background ── */
+    .hero-bg {
+      background-image:
+        linear-gradient(135deg, rgba(28,10,0,.72) 0%, rgba(59,26,8,.55) 60%, transparent 100%),
+        url('https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=1600&auto=format&fit=crop&q=80');
+      background-size: cover;
+      background-position: center 30%;
+    }
+
+    /* ── Decorative divider ── */
+    .ornament {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      justify-content: center;
+    }
+    .ornament::before, .ornament::after {
+      content: '';
+      flex: 1;
+      max-width: 5rem;
+      height: 1px;
+      background: #C27D3E;
+    }
+
+    /* ── Feature cards ── */
+    .feature-card {
+      background: #FFFDF7;
+      border: 1px solid #E8D9BF;
+      border-radius: 1rem;
+      padding: 2rem 1.5rem;
+      transition: transform .3s ease, box-shadow .3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: -40px; right: -40px;
+      width: 100px; height: 100px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(212,168,83,.18) 0%, transparent 70%);
+    }
+    .feature-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 40px rgba(28,10,0,.10);
+    }
+
+    /* ── Menu cards ── */
+    .menu-card {
+      background: #FFFDF7;
+      border: 1px solid #E8D9BF;
+      border-radius: 1rem;
+      overflow: hidden;
+      transition: transform .3s ease, box-shadow .3s ease;
+    }
+    .menu-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 16px 36px rgba(28,10,0,.12);
+    }
+    .menu-card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      transition: transform .5s ease;
+    }
+    .menu-card:hover img { transform: scale(1.05); }
+
+    /* ── WhatsApp floating button ── */
+    .wa-float {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      z-index: 1000;
+      background: #25D366;
+      color: #fff;
+      border-radius: 9999px;
+      padding: .85rem 1.4rem;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 600;
+      font-size: .875rem;
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      box-shadow: 0 8px 28px rgba(37,211,102,.45);
+      text-decoration: none;
+      transition: transform .25s ease, box-shadow .25s ease;
+      animation: pulse-wa 2.5s infinite;
+    }
+    .wa-float:hover {
+      transform: translateY(-3px) scale(1.04);
+      box-shadow: 0 14px 36px rgba(37,211,102,.55);
+      animation: none;
+    }
+    @keyframes pulse-wa {
+      0%, 100% { box-shadow: 0 8px 28px rgba(37,211,102,.45); }
+      50%       { box-shadow: 0 8px 40px rgba(37,211,102,.70); }
+    }
+
+    /* ── Rating badge ── */
+    .rating-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      background: rgba(255,255,255,.14);
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(255,255,255,.25);
+      border-radius: 9999px;
+      padding: .35rem .9rem;
+      color: #fff;
+      font-size: .8rem;
+      font-weight: 500;
+    }
+
+    /* ── Section fade-in on scroll ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── Footer ── */
+    .footer-bg {
+      background: #1C0A00;
+      color: #F0E4CC;
+    }
+
+    /* ── Google Maps embed ── */
+    .map-wrap {
+      border-radius: 1rem;
+      overflow: hidden;
+      border: 3px solid #3B1A08;
+    }
+
+    /* ── CTA button ── */
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      background: #C27D3E;
+      color: #FFFDF7;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 600;
+      font-size: .875rem;
+      letter-spacing: .04em;
+      padding: .65rem 1.4rem;
+      border-radius: 9999px;
+      text-decoration: none;
+      transition: background .25s, box-shadow .25s, transform .2s;
+      white-space: nowrap;
+    }
+    .btn-primary:hover {
+      background: #D4A853;
+      box-shadow: 0 6px 20px rgba(194,125,62,.40);
+      transform: translateY(-1px);
+    }
+    .btn-hero {
+      font-size: 1rem;
+      padding: .85rem 2rem;
+    }
+
+    /* ── Scroll indicator ── */
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(8px); }
+    }
+    .bounce { animation: bounce 1.6s ease-in-out infinite; }
+
+    /* ── Responsive nav ── */
+    @media (max-width: 640px) {
+      .nav-links { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ════════════════════════════════════
+       FLOATING WHATSAPP BUTTON
+  ════════════════════════════════════ -->
+  <a href="https://wa.me/6281299231774?text=Halo%20Yasmin%20Bakery%2C%20saya%20ingin%20pesan..." 
+     class="wa-float" target="_blank" rel="noopener" aria-label="Order via WhatsApp">
+    <!-- WhatsApp icon -->
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+      <path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.112 1.522 5.843L.057 23.882a.5.5 0 0 0 .623.614l6.244-1.635A11.935 11.935 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.882a9.845 9.845 0 0 1-5.031-1.378l-.36-.214-3.733.977.999-3.632-.235-.374A9.845 9.845 0 0 1 2.118 12C2.118 6.53 6.53 2.118 12 2.118S21.882 6.53 21.882 12 17.47 21.882 12 21.882z"/>
+    </svg>
+    <span>Pesan Sekarang</span>
+  </a>
+
+  <!-- ════════════════════════════════════
+       HEADER / NAVIGATION
+  ════════════════════════════════════ -->
+  <header class="sticky top-0 z-50 bg-cream/90 backdrop-blur-md border-b border-parchment" style="background-color:rgba(250,243,232,.9);">
+    <div class="max-w-6xl mx-auto px-5 py-4 flex items-center justify-between">
+
+      <!-- Brand -->
+      <a href="#" class="flex items-center gap-2.5">
+        <div class="w-9 h-9 rounded-full bg-caramel flex items-center justify-center shrink-0">
+          <!-- Coffee cup icon -->
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFFDF7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/>
+          </svg>
+        </div>
+        <div class="leading-tight">
+          <p class="font-display font-bold text-espresso text-base leading-none">Yasmin</p>
+          <p class="text-mocha text-[10px] tracking-widest uppercase font-medium">Bakery · Coffee · Resto</p>
+        </div>
+      </a>
+
+      <!-- Nav links (hidden on mobile) -->
+      <nav class="nav-links hidden sm:flex items-center gap-7">
+        <a href="#features" class="nav-link">Keunggulan</a>
+        <a href="#menu"     class="nav-link">Menu</a>
+        <a href="#lokasi"   class="nav-link">Lokasi</a>
+      </nav>
+
+      <!-- CTA -->
+      <a href="tel:081299231774" class="btn-primary">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.18h3a2 2 0 0 1 2 1.72c.127.96.36 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.37a16 16 0 0 0 5.82 5.82l.96-.96a2 2 0 0 1 2.11-.45c.907.34 1.85.573 2.81.7A2 2 0 0 1 21.5 16z"/>
+        </svg>
+        Call to Order
+      </a>
+    </div>
+  </header>
+
+  <!-- ════════════════════════════════════
+       HERO SECTION
+  ════════════════════════════════════ -->
+  <section class="hero-bg min-h-[92vh] flex flex-col justify-center items-start px-6 sm:px-12 md:px-20 relative">
+
+    <!-- Scroll indicator -->
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 bounce opacity-60">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="6 9 12 15 18 9"/>
+      </svg>
+    </div>
+
+    <div class="max-w-2xl">
+      <!-- Rating badge -->
+      <div class="rating-badge mb-5 w-fit">
+        <span style="color:#FFD700;">★★★★★</span>
+        <span>4.7 / 5 &nbsp;·&nbsp; 80 Ulasan Google</span>
+      </div>
+
+      <!-- Tag line -->
+      <p class="text-gold text-sm tracking-[.2em] uppercase font-medium mb-3 font-body">
+        Bakery · Coffee · Resto — Palembang
+      </p>
+
+      <!-- Main heading -->
+      <h1 class="font-display text-5xl sm:text-6xl md:text-7xl leading-[1.08] text-white mb-5">
+        Cita Rasa Klasik<br/>
+        <em>di Jantung<br/>Palembang.</em>
+      </h1>
+
+      <!-- Subheading -->
+      <p class="text-white/80 text-lg sm:text-xl leading-relaxed mb-8 max-w-md">
+        Menyediakan Roti, Cake Jadul, dan Kopi Vietnam terbaik sejak 6 tahun lalu — hadir untuk keluarga Anda.
+      </p>
+
+      <!-- Action buttons -->
+      <div class="flex flex-wrap gap-3">
+        <a href="https://wa.me/6281299231774?text=Halo%20Yasmin%20Bakery%2C%20saya%20ingin%20pesan..." 
+           class="btn-primary btn-hero" target="_blank" rel="noopener">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347zM12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.112 1.522 5.843L.057 23.882a.5.5 0 0 0 .623.614l6.244-1.635A11.935 11.935 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.882a9.845 9.845 0 0 1-5.031-1.378l-.36-.214-3.733.977.999-3.632-.235-.374A9.845 9.845 0 0 1 2.118 12C2.118 6.53 6.53 2.118 12 2.118S21.882 6.53 21.882 12 17.47 21.882 12 21.882z"/>
+          </svg>
+          Pesan via WhatsApp
+        </a>
+        <a href="#menu" class="inline-flex items-center gap-2 border border-white/50 text-white rounded-full px-6 py-3.5 text-sm font-medium hover:bg-white/10 transition-colors">
+          Lihat Menu
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════
+       FEATURES SECTION
+  ════════════════════════════════════ -->
+  <section id="features" class="py-24 px-6 sm:px-10" style="background-color:#FAF3E8;">
+    <div class="max-w-6xl mx-auto">
+
+      <!-- Section header -->
+      <div class="text-center mb-14 reveal">
+        <p class="text-caramel text-xs tracking-[.25em] uppercase font-medium mb-3">Kenapa Yasmin?</p>
+        <h2 class="font-display text-4xl sm:text-5xl text-espresso mb-4">Lebih dari Sekadar<br/><em>Tempat Makan</em></h2>
+        <div class="ornament">
+          <span class="text-caramel text-lg">✦</span>
+        </div>
+      </div>
+
+      <!-- 3-column grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+
+        <!-- Card 1 -->
+        <div class="feature-card reveal">
+          <div class="w-12 h-12 rounded-2xl bg-parchment flex items-center justify-center mb-5">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#C27D3E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
+            </svg>
+          </div>
+          <h3 class="font-display text-2xl text-espresso mb-3">Cozy &amp; Spacious</h3>
+          <p class="text-mocha text-sm leading-relaxed">
+            Nikmati suasana hangat dan nyaman dengan dekorasi estetik yang membuat betah berlama-lama. Cocok untuk bersantai maupun bekerja.
+          </p>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="feature-card reveal" style="transition-delay:.12s;">
+          <div class="w-12 h-12 rounded-2xl bg-parchment flex items-center justify-center mb-5">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#C27D3E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+            </svg>
+          </div>
+          <h3 class="font-display text-2xl text-espresso mb-3">Family Friendly</h3>
+          <p class="text-mocha text-sm leading-relaxed">
+            Fasilitas lengkap: <strong class="text-mocha font-semibold">Karaoke</strong> seru untuk hiburan keluarga, plus <strong class="text-mocha font-semibold">Musholla</strong> yang nyaman agar ibadah tetap terjaga.
+          </p>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="feature-card reveal" style="transition-delay:.24s;">
+          <div class="w-12 h-12 rounded-2xl bg-parchment flex items-center justify-center mb-5">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#C27D3E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+            </svg>
+          </div>
+          <h3 class="font-display text-2xl text-espresso mb-3">Bahan Berkualitas</h3>
+          <p class="text-mocha text-sm leading-relaxed">
+            Setiap produk dibuat dari bahan pilihan segar tanpa pengawet berlebihan — cita rasa autentik yang konsisten di setiap gigitan.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════
+       MENU / CATALOG SECTION
+  ════════════════════════════════════ -->
+  <section id="menu" style="background-color:#F0E4CC;" class="py-24 px-6 sm:px-10">
+    <div class="max-w-6xl mx-auto">
+
+      <!-- Section header -->
+      <div class="text-center mb-14 reveal">
+        <p class="text-caramel text-xs tracking-[.25em] uppercase font-medium mb-3">Pilihan Terbaik Kami</p>
+        <h2 class="font-display text-4xl sm:text-5xl text-espresso mb-4">Menu <em>Unggulan</em></h2>
+        <div class="ornament">
+          <span class="text-caramel text-lg">✦</span>
+        </div>
+      </div>
+
+      <!-- 4-col / 2-col / 1-col responsive grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+
+        <!-- 1. Cake Jadul -->
+        <div class="menu-card reveal">
+          <div class="overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=600&auto=format&fit=crop&q=75" alt="Cake Jadul" loading="lazy" />
+          </div>
+          <div class="p-4">
+            <span class="text-[10px] text-caramel tracking-widest uppercase font-medium">Signature</span>
+            <h3 class="font-display text-xl text-espresso mt-1 mb-1">Cake Jadul</h3>
+            <p class="text-mocha text-xs leading-relaxed mb-4">Kelembutan kue klasik dengan cita rasa nostalgia yang hangat dan autentik.</p>
+            <a href="https://wa.me/6281299231774?text=Halo,%20saya%20ingin%20memesan%20Cake%20Jadul" target="_blank" rel="noopener"
+               class="flex items-center gap-1.5 text-xs font-semibold text-caramel hover:text-gold transition-colors">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347zM12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.112 1.522 5.843L.057 23.882a.5.5 0 0 0 .623.614l6.244-1.635A11.935 11.935 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.882a9.845 9.845 0 0 1-5.031-1.378l-.36-.214-3.733.977.999-3.632-.235-.374A9.845 9.845 0 0 1 2.118 12C2.118 6.53 6.53 2.118 12 2.118S21.882 6.53 21.882 12 17.47 21.882 12 21.882z"/></svg>
+              Pesan via WhatsApp →
+            </a>
+          </div>
+        </div>
+
+        <!-- 2. Kopi Vietnam -->
+        <div class="menu-card reveal" style="transition-delay:.06s;">
+          <div class="overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1570968915860-54d5c301fa9f?w=600&auto=format&fit=crop&q=75" alt="Kopi Vietnam" loading="lazy" />
+          </div>
+          <div class="p-4">
+            <span class="text-[10px] text-caramel tracking-widest uppercase font-medium">Signature</span>
+            <h3 class="font-display text-xl text-espresso mt-1 mb-1">Kopi Vietnam</h3>
+            <p class="text-mocha text-xs leading-relaxed mb-4">Robusta kuat bertemu susu kental manis — perpaduan khas yang memanjakan lidah.</p>
+            <a href="https://wa.me/6281299231774?text=Halo,%20saya%20ingin%20memesan%20Kopi%20Vietnam" target="_blank" rel="noopener"
+               class="flex items-center gap-1.5 text-xs font-semibold text-caramel hover:text-gold transition-colors">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347zM12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.112 1.522 5.843L.057 23.882a.5.5 0 0 0 .623.614l6.244-1.635A11.935 11.935 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.882a9.845 9.845 0 0 1-5.031-1.378l-.36-.214-3.733.977.999-3.632-.235-.374A9.845 9.845 0 0 1 2.118 12C2.118 6.53 6.53 2.118 12 2.118S21.882 6.53 21.882 12 17.47 21.882 12 21.882z"/></svg>
+              Pesan via WhatsApp →
+            </a>
+          </div>
+        </div>
+
+        <!-- 3. Kwitiaw -->
+        <div class="menu-card reveal" style="transition-delay:.12s;">
+          <div class="overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1563245372-f21724e3856d?w=600&auto=format&fit=crop&q=75" alt="Kwitiaw" loading="lazy" />
+          </div>
+          <div class="p-4">
+            <span class="text-[10px] text-caramel tracking-widest uppercase font-medium">Signature</span>
+            <h3 class="font-display text-xl text-espresso mt-1 mb-1">Kwitiaw</h3>
+            <p class="text-mocha text-xs leading-relaxed mb-4">Kwetiau lembut dengan kuah gurih kental — sajian berat yang mengenyangkan dan memuaskan.</p>
+            <a href="https://wa.me/6281299231774?text=Halo,%20saya%20ingin%20memesan%20Kwitiaw" target="_blank" rel="noopener"
+               class="flex items-center gap-1.5 text-xs font-semibold text-caramel hover:text-gold transition-colors">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347zM12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.112 1.522 5.843L.057 23.882a.5.5 0 0 0 .623.614l6.244-1.635A11.935 11.935 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.882a9.845 9.845 0 0 1-5.031-1.378l-.36-.214-3.733.977.999-3.632-.235-.374A9.845 9.845 0 0 1 2.118 12C2.118 6.53 6.53 2.118 12 2.118S21.882 6.53 21.882 12 17.47 21.882 12 21.882z"/></svg>
+              Pesan via WhatsApp →
+            </a>
+          </div>
+        </div>
+
+        <!-- 4. Croissant -->
+        <div class="menu-card reveal" style="transition-delay:.18s;">
+          <div class="overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=600&auto=format&fit=crop&q=75" alt="Croissant Butter" loading="lazy" />
+          </div>
+          <div class="p-4">
+            <span class="text-[10px] text-caramel tracking-widest uppercase font-medium">Bakery</span>
+            <h3 class="font-display text-xl text-espresso mt-1 mb-1">Croissant Butter</h3>
+            <p class="text-mocha text-xs leading-relaxed mb-4">Lapisan renyah golden brown dengan isi mentega premium yang meleleh sempurna.</p>
+            <a href="https://wa.me/6281299231774?text=Halo,%20saya%20ingin%20memesan%20Croissant" target="_blank" rel="noopener"
+               class="flex items-center gap-1.5 text-xs font-semibold text-caramel hover:text-gold transition-colors">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347zM12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.112 1.522 5.843L.057 23.882a.5.5 0 0 0 .623.614l6.244-1.635A11.935 11.935 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.882a9.845 9.845 0 0 1-5.031-1.378l-.36-.214-3.733.977.999-3.632-.235-.374A9.845 9.845 0 0 1 2.118 12C2.118 6.53 6.53 2.118 12 2.118S21.882 6.53 21.882 12 17.47 21.882 12 21.882z"/></svg>
+              Pesan via WhatsApp →
+            </a>
+          </div>
+        </div>
+
+        <!-- 5. Roti Bakar -->
+        <div class="menu-card reveal" style="transition-delay:.24s;">
+          <div class="overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1525351484163-7529414344d8?w=600&auto=format&fit=crop&q=75" alt="Roti Bakar Spesial" loading="lazy" />
+          </div>
+          <div class="p-4">
+            <span class="text-[10px] text-caramel tracking-widest uppercase font-medium">Bakery</span>
+            <h3 class="font-display text-xl text-espresso mt-1 mb-1">Roti Bakar Spesial</h3>
+            <p class="text-mocha text-xs leading-relaxed mb-4">Roti panggang crispy dengan topping selai spesial pilihan — sarapan terbaik setiap pagi.</p>
+            <a href="https://wa.me/6281299231774?text=Halo,%20saya%20ingin%20memesan%20Roti%20Bakar" target="_blank" rel="noopener"
+               class="flex items-center gap-1.5 text-xs font-semibold text-caramel hover:text-gold transition-colors">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347zM12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.112 1.522 5.843L.057 23.882a.5.5 0 0 0 .623.614l6.244-1.635A11.935 11.635 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.882a9.845 9.845 0 0 1-5.031-1.378l-.36-.214-3.733.977.999-3.632-.235-.374A9.845 9.845 0 0 1 2.118 12C2.118 6.53 6.53 2.118 12 2.118S21.882 6.53 21.882 12 17.47 21.882 12 21.882z"/></svg>
+              Pesan via WhatsApp →
+            </a>
+          </div>
+        </div>
+
+        <!-- 6. Latte -->
+        <div class="menu-card reveal" style="transition-delay:.3s;">
+          <div class="overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1541167760496-1628856ab772?w=600&auto=format&fit=crop&q=75" alt="Caramel Latte" loading="lazy" />
+          </div>
+          <div class="p-4">
+            <span class="text-[10px] text-caramel tracking-widest uppercase font-medium">Coffee</span>
+            <h3 class="font-display text-xl text-espresso mt-1 mb-1">Caramel Latte</h3>
+            <p class="text-mocha text-xs leading-relaxed mb-4">Espresso lembut bertemu susu steam dan siraman karamel hangat — manis yang seimbang.</p>
+            <a href="https://wa.me/6281299231774?text=Halo,%20saya%20ingin%20memesan%20Caramel%20Latte" target="_blank" rel="noopener"
+               class="flex items-center gap-1.5 text-xs font-semibold text-caramel hover:text-gold transition-colors">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347zM12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.112 1.522 5.843L.057 23.882a.5.5 0 0 0 .623.614l6.244-1.635A11.935 11.935 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.882a9.845 9.845 0 0 1-5.031-1.378l-.36-.214-3.733.977.999-3.632-.235-.374A9.845 9.845 0 0 1 2.118 12C2.118 6.53 6.53 2.118 12 2.118S21.882 6.53 21.882 12 17.47 21.882 12 21.882z"/></svg>
+              Pesan via WhatsApp →
+            </a>
+          </div>
+        </div>
+
+        <!-- 7. Sandwich -->
+        <div class="menu-card reveal" style="transition-delay:.36s;">
+          <div class="overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=600&auto=format&fit=crop&q=75" alt="Club Sandwich" loading="lazy" />
+          </div>
+          <div class="p-4">
+            <span class="text-[10px] text-caramel tracking-widest uppercase font-medium">Resto</span>
+            <h3 class="font-display text-xl text-espresso mt-1 mb-1">Club Sandwich</h3>
+            <p class="text-mocha text-xs leading-relaxed mb-4">Triple layer dengan isian ayam panggang, telur, dan sayur segar — mengenyangkan dan lezat.</p>
+            <a href="https://wa.me/6281299231774?text=Halo,%20saya%20ingin%20memesan%20Club%20Sandwich" target="_blank" rel="noopener"
+               class="flex items-center gap-1.5 text-xs font-semibold text-caramel hover:text-gold transition-colors">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347zM12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.112 1.522 5.843L.057 23.882a.5.5 0 0 0 .623.614l6.244-1.635A11.935 11.935 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.882a9.845 9.845 0 0 1-5.031-1.378l-.36-.214-3.733.977.999-3-632-.235-.374A9.845 9.845 0 0 1 2.118 12C2.118 6.53 6.53 2.118 12 2.118S21.882 6.53 21.882 12 17.47 21.882 12 21.882z"/></svg>
+              Pesan via WhatsApp →
+            </a>
+          </div>
+        </div>
+
+        <!-- 8. Es Kopi Susu -->
+        <div class="menu-card reveal" style="transition-delay:.42s;">
+          <div class="overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=600&auto=format&fit=crop&q=75" alt="Es Kopi Susu" loading="lazy" />
+          </div>
+          <div class="p-4">
+            <span class="text-[10px] text-caramel tracking-widest uppercase font-medium">Coffee</span>
+            <h3 class="font-display text-xl text-espresso mt-1 mb-1">Es Kopi Susu</h3>
+            <p class="text-mocha text-xs leading-relaxed mb-4">Dingin, segar, dan kaya rasa — kopi susu kekinian favorit semua kalangan di cuaca panas.</p>
+            <a href="https://wa.me/6281299231774?text=Halo,%20saya%20ingin%20memesan%20Es%20Kopi%20Susu" target="_blank" rel="noopener"
+               class="flex items-center gap-1.5 text-xs font-semibold text-caramel hover:text-gold transition-colors">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347zM12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.112 1.522 5.843L.057 23.882a.5.5 0 0 0 .623.614l6.244-1.635A11.935 11.935 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.882a9.845 9.845 0 0 1-5.031-1.378l-.36-.214-3.733.977.999-3.632-.235-.374A9.845 9.845 0 0 1 2.118 12C2.118 6.53 6.53 2.118 12 2.118S21.882 6.53 21.882 12 17.47 21.882 12 21.882z"/></svg>
+              Pesan via WhatsApp →
+            </a>
+          </div>
+        </div>
+
+      </div><!-- /grid -->
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════
+       LOKASI / FOOTER SECTION
+  ════════════════════════════════════ -->
+  <footer id="lokasi" class="footer-bg pt-20 pb-10 px-6 sm:px-10">
+    <div class="max-w-6xl mx-auto">
+
+      <!-- Top grid: info + map -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-12 mb-16 reveal">
+
+        <!-- Info column -->
+        <div>
+          <!-- Brand -->
+          <div class="flex items-center gap-3 mb-6">
+            <div class="w-11 h-11 rounded-full bg-caramel flex items-center justify-center shrink-0">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFFDF7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/>
+              </svg>
+            </div>
+            <div>
+              <p class="font-display text-xl text-cream leading-none">Yasmin Bakery</p>
+              <p class="text-gold/70 text-[10px] tracking-widest uppercase">Coffee &amp; Resto</p>
+            </div>
+          </div>
+
+          <p class="text-parchment/70 text-sm leading-relaxed mb-8 max-w-sm">
+            Tempat terbaik untuk menikmati kopi, kue, dan kuliner pilihan bersama orang-orang tersayang di Palembang.
+          </p>
+
+          <!-- Info list -->
+          <ul class="space-y-4 text-sm">
+            <!-- Address -->
+            <li class="flex items-start gap-3">
+              <div class="w-8 h-8 rounded-lg bg-roast flex items-center justify-center shrink-0 mt-0.5">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#D4A853" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+                </svg>
+              </div>
+              <div>
+                <p class="text-gold font-medium mb-0.5">Alamat</p>
+                <p class="text-parchment/70">Jl. Pipa Reja, Pipa Jaya, Kec. Kemuning,<br/>Kota Palembang, Sumatera Selatan 30127</p>
+              </div>
+            </li>
+            <!-- Phone -->
+            <li class="flex items-start gap-3">
+              <div class="w-8 h-8 rounded-lg bg-roast flex items-center justify-center shrink-0 mt-0.5">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#D4A853" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.18h3a2 2 0 0 1 2 1.72c.127.96.36 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.37a16 16 0 0 0 5.82 5.82l.96-.96a2 2 0 0 1 2.11-.45c.907.34 1.85.573 2.81.7A2 2 0 0 1 21.5 16z"/>
+                </svg>
+              </div>
+              <div>
+                <p class="text-gold font-medium mb-0.5">Telepon / WhatsApp</p>
+                <a href="tel:081299231774" class="text-parchment/70 hover:text-gold transition-colors">0812-9923-1774</a>
+              </div>
+            </li>
+            <!-- Hours -->
+            <li class="flex items-start gap-3">
+              <div class="w-8 h-8 rounded-lg bg-roast flex items-center justify-center shrink-0 mt-0.5">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#D4A853" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+                </svg>
+              </div>
+              <div>
+                <p class="text-gold font-medium mb-0.5">Jam Operasional</p>
+                <p class="text-parchment/70">Setiap hari — tutup pukul <strong class="text-parchment">22.00 WIB</strong></p>
+              </div>
+            </li>
+            <!-- Rating -->
+            <li class="flex items-start gap-3">
+              <div class="w-8 h-8 rounded-lg bg-roast flex items-center justify-center shrink-0 mt-0.5">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="#D4A853" stroke="#D4A853" stroke-width="1">
+                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                </svg>
+              </div>
+              <div>
+                <p class="text-gold font-medium mb-0.5">Rating Google</p>
+                <p class="text-parchment/70">⭐ 4.7 / 5 &nbsp;·&nbsp; 80 Ulasan</p>
+              </div>
+            </li>
+          </ul>
+
+          <!-- WhatsApp CTA -->
+          <a href="https://wa.me/6281299231774?text=Halo%20Yasmin%20Bakery%2C%20saya%20ingin%20pesan..." 
+             target="_blank" rel="noopener"
+             class="mt-8 inline-flex items-center gap-2 bg-[#25D366] text-white rounded-full px-6 py-3 text-sm font-semibold hover:bg-[#1ebe5a] transition-colors shadow-lg shadow-green-900/30">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347zM12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.112 1.522 5.843L.057 23.882a.5.5 0 0 0 .623.614l6.244-1.635A11.935 11.935 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.882a9.845 9.845 0 0 1-5.031-1.378l-.36-.214-3.733.977.999-3.632-.235-.374A9.845 9.845 0 0 1 2.118 12C2.118 6.53 6.53 2.118 12 2.118S21.882 6.53 21.882 12 17.47 21.882 12 21.882z"/></svg>
+            Chat &amp; Pesan via WhatsApp
+          </a>
+        </div>
+
+        <!-- Map column -->
+        <div>
+          <p class="text-gold text-xs tracking-[.2em] uppercase font-medium mb-4">Temukan Kami</p>
+          <div class="map-wrap">
+            <iframe
+              title="Lokasi Yasmin Bakery Palembang"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3984.6!2d104.7610!3d-2.9810!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e3b75b4f5a8c3f7%3A0x0!2sJl.%20Pipa%20Reja%2C%20Pipa%20Jaya%2C%20Kec.%20Kemuning%2C%20Kota%20Palembang!5e0!3m2!1sid!2sid!4v1700000000000!5m2!1sid!2sid"
+              width="100%"
+              height="300"
+              style="border:0;"
+              allowfullscreen=""
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
+          </div>
+          <a href="https://maps.google.com/?q=Jl.+Pipa+Reja,+Pipa+Jaya,+Kec.+Kemuning,+Kota+Palembang" 
+             target="_blank" rel="noopener"
+             class="mt-3 flex items-center gap-1.5 text-xs text-gold/70 hover:text-gold transition-colors">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
+            </svg>
+            Buka di Google Maps →
+          </a>
+        </div>
+      </div>
+
+      <!-- Divider -->
+      <div class="border-t border-white/10 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-parchment/40">
+        <p>© 2025 Yasmin Bakery, Coffee &amp; Resto. All rights reserved.</p>
+        <p class="tracking-wide">
+          Engineered with ♥ by 
+          <a href="#" class="text-gold/60 hover:text-gold transition-colors font-medium">ASSO.dev</a>
+        </p>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- ════════════════════════════════════
+       SCROLL REVEAL SCRIPT
+  ════════════════════════════════════ -->
+  <script>
+    // Intersection Observer for .reveal elements
+    const revealEls = document.querySelectorAll('.reveal');
+    const observer  = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+    revealEls.forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>
